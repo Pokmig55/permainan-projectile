@@ -49,9 +49,9 @@
         <button id="launch">Launch</button>
     </div>
     <div id="info">
-        <p>Velocity: <span id="velocityDisplay"></span> m/s</p>
-        <p>Target Range: <span id="rangeDisplay"></span> m</p>
-        <p>Target Height: <span id="heightDisplay"></span> m</p>
+        <p>Velocity: <span id="velocityDisplay">37.65</span> m/s</p>
+        <p>Target Range: <span id="rangeDisplay">50.11</span> m</p>
+        <p>Target Height: <span id="heightDisplay">22.74</span> m</p>
     </div>
     <canvas id="simulationCanvas" width="800" height="400"></canvas>
     <div id="result"></div>
@@ -64,18 +64,16 @@
         const launchButton = document.getElementById("launch");
         const resultDisplay = document.getElementById("result");
 
-        const velocityDisplay = document.getElementById("velocityDisplay");
-        const rangeDisplay = document.getElementById("rangeDisplay");
-        const heightDisplay = document.getElementById("heightDisplay");
-
-        let velocity = Math.random() * 20 + 30; // Random velocity between 30 and 50 m/s
-        let target = {
-            x: Math.random() * 300 + 400, // Random target range (pixels)
-            y: Math.random() * 100 + 200 // Random target height (pixels)
-        };
-
-        const gravity = 9.81;
+        const velocity = 37.65; // Fixed velocity in m/s
+        const targetRange = 50.11; // Fixed target range in m
+        const targetHeight = 22.74; // Fixed target height in m
+        const gravity = 9.81; // Gravity in m/s^2
         const scale = 10; // Scale for converting pixels to meters
+
+        const target = {
+            x: targetRange * scale, // Convert to pixels
+            y: targetHeight * scale // Convert to pixels
+        };
 
         let projectile = {
             x: 0,
@@ -118,8 +116,8 @@
             const t = projectile.time;
 
             // Update position using SUVAT equations
-            projectile.x = projectile.vx * t;
-            projectile.y = canvas.height - (projectile.vy * t - 0.5 * gravity * t * t);
+            projectile.x = projectile.vx * t * scale;
+            projectile.y = canvas.height - ((projectile.vy * t - 0.5 * gravity * t * t) * scale);
 
             // Stop the projectile if it hits the ground
             if (projectile.y >= canvas.height) {
@@ -164,17 +162,6 @@
             projectile.x = 0;
             projectile.y = canvas.height;
             projectile.launched = false;
-            velocity = Math.random() * 20 + 30; // Reset random velocity
-            target.x = Math.random() * 300 + 400; // Reset random target position
-            target.y = Math.random() * 100 + 200;
-
-            updateInfo();
-        }
-
-        function updateInfo() {
-            velocityDisplay.textContent = velocity.toFixed(2);
-            rangeDisplay.textContent = (target.x / scale).toFixed(2); // Convert to meters
-            heightDisplay.textContent = (target.y / scale).toFixed(2); // Convert to meters
         }
 
         launchButton.addEventListener("click", () => {
@@ -182,15 +169,14 @@
 
             projectile.x = 0;
             projectile.y = canvas.height;
-            projectile.vx = (velocity * Math.cos(angle)) / scale;
-            projectile.vy = (velocity * Math.sin(angle)) / scale;
+            projectile.vx = velocity * Math.cos(angle);
+            projectile.vy = velocity * Math.sin(angle);
             projectile.launched = true;
             projectile.time = 0;
 
             resultDisplay.textContent = "";
         });
 
-        updateInfo();
         gameLoop();
     </script>
 </body>
