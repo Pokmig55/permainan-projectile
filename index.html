@@ -27,6 +27,12 @@
             width: 60px;
         }
 
+        #info {
+            font-size: 16px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
         #result {
             font-weight: bold;
             margin-top: 20px;
@@ -42,6 +48,11 @@
         <br>
         <button id="launch">Launch</button>
     </div>
+    <div id="info">
+        <p>Velocity: <span id="velocityDisplay"></span> m/s</p>
+        <p>Target Range: <span id="rangeDisplay"></span> m</p>
+        <p>Target Height: <span id="heightDisplay"></span> m</p>
+    </div>
     <canvas id="simulationCanvas" width="800" height="400"></canvas>
     <div id="result"></div>
 
@@ -52,6 +63,10 @@
         const angleInput = document.getElementById("angle");
         const launchButton = document.getElementById("launch");
         const resultDisplay = document.getElementById("result");
+
+        const velocityDisplay = document.getElementById("velocityDisplay");
+        const rangeDisplay = document.getElementById("rangeDisplay");
+        const heightDisplay = document.getElementById("heightDisplay");
 
         let projectile = {
             x: 0,
@@ -144,6 +159,14 @@
             velocity = Math.random() * 20 + 30; // Reset random velocity
             target.x = Math.random() * 300 + 400; // Reset random target position
             target.y = Math.random() * 100 + 200;
+
+            updateInfo();
+        }
+
+        function updateInfo() {
+            velocityDisplay.textContent = velocity.toFixed(2);
+            rangeDisplay.textContent = (target.x / 10).toFixed(2); // Convert to meters assuming scale
+            heightDisplay.textContent = (target.y / 10).toFixed(2); // Convert to meters assuming scale
         }
 
         launchButton.addEventListener("click", () => {
@@ -159,6 +182,7 @@
             resultDisplay.textContent = "";
         });
 
+        updateInfo();
         gameLoop();
     </script>
 </body>
