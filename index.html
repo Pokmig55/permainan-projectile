@@ -127,13 +127,16 @@
         }
 
         function checkResult() {
-            const hitTarget =
-                projectile.x > target.x - 20 &&
-                projectile.x < target.x + 20 &&
-                canvas.height - projectile.y < canvas.height - target.y + 10 &&
-                canvas.height - projectile.y > canvas.height - target.y - 10;
+            const targetCenterX = target.x;
+            const targetCenterY = canvas.height - target.y;
+            const distance = Math.sqrt(
+                Math.pow(projectile.x - targetCenterX, 2) +
+                Math.pow(projectile.y - targetCenterY, 2)
+            );
 
-            if (hitTarget) {
+            const hitRadius = 15; // Radius for successful hit detection
+
+            if (distance <= hitRadius) {
                 resultDisplay.textContent = "Success! The cat made it to the platform!";
                 resultDisplay.style.color = "green";
             } else {
