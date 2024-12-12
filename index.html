@@ -68,20 +68,22 @@
         const rangeDisplay = document.getElementById("rangeDisplay");
         const heightDisplay = document.getElementById("heightDisplay");
 
+        let velocity = Math.random() * 20 + 30; // Random velocity between 30 and 50 m/s
+        let target = {
+            x: Math.random() * 300 + 400, // Random target range (pixels)
+            y: Math.random() * 100 + 200 // Random target height (pixels)
+        };
+
+        const gravity = 9.81;
+        const scale = 10; // Scale for converting pixels to meters
+
         let projectile = {
             x: 0,
             y: canvas.height,
             vx: 0,
             vy: 0,
-            launched: false
-        };
-
-        const gravity = 9.81;
-        let time = 0;
-        let velocity = Math.random() * 40 + 60; // Random velocity between 30 and 50 m/s
-        let target = {
-            x: Math.random() * 0 + 400, // Random target range
-            y: Math.random() * 0 + 200 // Random target height
+            launched: false,
+            time: 0
         };
 
         function drawGround() {
@@ -112,10 +114,14 @@
         function updateProjectile() {
             if (!projectile.launched) return;
 
-            time += 0.05;
-            projectile.x = projectile.vx * time;
-            projectile.y = canvas.height - (projectile.vy * time - 0.5 * gravity * time * time);
+            projectile.time += 0.05;
+            const t = projectile.time;
 
+            // Update position using SUVAT equations
+            projectile.x = projectile.vx * t;
+            projectile.y = canvas.height - (projectile.vy * t - 0.5 * gravity * t * t);
+
+            // Stop the projectile if it hits the ground
             if (projectile.y >= canvas.height) {
                 projectile.launched = false;
                 checkResult();
@@ -123,9 +129,11 @@
         }
 
         function checkResult() {
-            const hitTarget = projectile.x > target.x - 20 && projectile.x < target.x + 20 &&
-                              canvas.height - projectile.y < canvas.height - target.y + 10 &&
-                              canvas.height - projectile.y > canvas.height - target.y - 10;
+            const hitTarget =
+                projectile.x > target.x - 20 &&
+                projectile.x < target.x + 20 &&
+                canvas.height - projectile.y < canvas.height - target.y + 10 &&
+                canvas.height - projectile.y > canvas.height - target.y - 10;
 
             if (hitTarget) {
                 resultDisplay.textContent = "Success! The cat made it to the platform!";
@@ -152,7 +160,7 @@
         }
 
         function resetGame() {
-            time = 0;
+            projectile.time = 0;
             projectile.x = 0;
             projectile.y = canvas.height;
             projectile.launched = false;
@@ -165,8 +173,8 @@
 
         function updateInfo() {
             velocityDisplay.textContent = velocity.toFixed(2);
-            rangeDisplay.textContent = (target.x / 10).toFixed(2); // Convert to meters assuming scale
-            heightDisplay.textContent = (target.y / 10).toFixed(2); // Convert to meters assuming scale
+            rangeDisplay.textContent = (target.x / scale).toFixed(2); // Convert to meters
+            heightDisplay.textContent = (target.y / scale).toFixed(2); // Convert to meters
         }
 
         launchButton.addEventListener("click", () => {
@@ -174,10 +182,10 @@
 
             projectile.x = 0;
             projectile.y = canvas.height;
-            projectile.vx = velocity * Math.cos(angle);
-            projectile.vy = velocity * Math.sin(angle);
+            projectile.vx = (velocity * Math.cos(angle)) / scale;
+            projectile.vy = (velocity * Math.sin(angle)) / scale;
             projectile.launched = true;
-            time = 0;
+            projectile.time = 0;
 
             resultDisplay.textContent = "";
         });
