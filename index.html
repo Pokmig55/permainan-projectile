@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projectile Motion Simulation</title>
+    <title>Projectile Challenge Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,41 +22,36 @@
             margin: 10px 0;
         }
 
-        input[type="range"] {
+        input[type="number"] {
             margin: 0 10px;
+            width: 60px;
+        }
+
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Projectile Motion Simulation</h1>
+    <h1>Projectile Challenge Game</h1>
+    <p>Help the cat jump to the target platform! Enter the correct angle to make the jump.</p>
     <div id="controls">
         <label for="angle">Angle (degrees): </label>
-        <input type="range" id="angle" min="0" max="90" value="45"> <span id="angleValue">45</span>
-        <br>
-        <label for="velocity">Initial Velocity (m/s): </label>
-        <input type="range" id="velocity" min="10" max="100" value="50"> <span id="velocityValue">50</span>
+        <input type="number" id="angle" min="0" max="90" value="45"> 
         <br>
         <button id="launch">Launch</button>
     </div>
     <canvas id="simulationCanvas" width="800" height="400"></canvas>
+    <div id="result"></div>
 
     <script>
         const canvas = document.getElementById("simulationCanvas");
         const ctx = canvas.getContext("2d");
 
         const angleInput = document.getElementById("angle");
-        const velocityInput = document.getElementById("velocity");
-        const angleValue = document.getElementById("angleValue");
-        const velocityValue = document.getElementById("velocityValue");
         const launchButton = document.getElementById("launch");
-
-        angleInput.addEventListener("input", () => {
-            angleValue.textContent = angleInput.value;
-        });
-
-        velocityInput.addEventListener("input", () => {
-            velocityValue.textContent = velocityInput.value;
-        });
+        const resultDisplay = document.getElementById("result");
 
         let projectile = {
             x: 0,
@@ -68,6 +63,11 @@
 
         const gravity = 9.8;
         let time = 0;
+        let velocity = Math.random() * 20 + 30; // Random velocity between 30 and 50 m/s
+        let target = {
+            x: Math.random() * 300 + 400, // Random target range
+            y: Math.random() * 100 + 200 // Random target height
+        };
 
         function drawGround() {
             ctx.fillStyle = "green";
@@ -76,8 +76,17 @@
 
         function drawProjectile() {
             ctx.beginPath();
-            ctx.arc(projectile.x, projectile.y, 5, 0, Math.PI * 2);
+            ctx.arc(projectile.x, projectile.y, 10, 0, Math.PI * 2);
             ctx.fillStyle = "red";
+            ctx.fill();
+        }
+
+        function drawTarget() {
+            ctx.fillStyle = "blue";
+            ctx.fillRect(target.x - 20, canvas.height - target.y - 10, 40, 10);
+            ctx.beginPath();
+            ctx.arc(target.x, canvas.height - target.y - 15, 15, 0, Math.PI * 2);
+            ctx.fillStyle = "orange";
             ctx.fill();
         }
 
@@ -94,12 +103,30 @@
 
             if (projectile.y >= canvas.height) {
                 projectile.launched = false;
+                checkResult();
             }
+        }
+
+        function checkResult() {
+            const hitTarget = projectile.x > target.x - 20 && projectile.x < target.x + 20 &&
+                              canvas.height - projectile.y < canvas.height - target.y + 10 &&
+                              canvas.height - projectile.y > canvas.height - target.y - 10;
+
+            if (hitTarget) {
+                resultDisplay.textContent = "Success! The cat made it to the platform!";
+                resultDisplay.style.color = "green";
+            } else {
+                resultDisplay.textContent = "Missed! Try a different angle.";
+                resultDisplay.style.color = "red";
+            }
+
+            resetGame();
         }
 
         function render() {
             resetCanvas();
             drawGround();
+            drawTarget();
             drawProjectile();
         }
 
@@ -109,9 +136,18 @@
             requestAnimationFrame(gameLoop);
         }
 
+        function resetGame() {
+            time = 0;
+            projectile.x = 0;
+            projectile.y = canvas.height;
+            projectile.launched = false;
+            velocity = Math.random() * 20 + 30; // Reset random velocity
+            target.x = Math.random() * 300 + 400; // Reset random target position
+            target.y = Math.random() * 100 + 200;
+        }
+
         launchButton.addEventListener("click", () => {
             const angle = parseFloat(angleInput.value) * (Math.PI / 180);
-            const velocity = parseFloat(velocityInput.value);
 
             projectile.x = 0;
             projectile.y = canvas.height;
@@ -119,6 +155,8 @@
             projectile.vy = velocity * Math.sin(angle);
             projectile.launched = true;
             time = 0;
+
+            resultDisplay.textContent = "";
         });
 
         gameLoop();
