@@ -90,14 +90,13 @@
     ctx.arc(x, y, 10, 0, Math.PI * 2);
     ctx.fillStyle = "black";
     ctx.fill();
-  
-
-        function drawGround() {
+        };
+         function drawGround() {
             ctx.fillStyle = "green";
             ctx.fillRect(0, canvas.height - 10, canvas.width, 10);
         }
 
-        function drawProjectile() {
+         function drawProjectile() {
             ctx.beginPath();
             ctx.arc(projectile.x, projectile.y, 10, 0, Math.PI * 2);
             ctx.fillStyle = "red";
