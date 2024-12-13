@@ -83,7 +83,7 @@
             y: canvas.height,
             vx: 0,
             vy: 0,
-            launched: false,
+            launched: true,
             time: 0
         };
           
@@ -143,7 +143,7 @@
                 Math.pow(projectile.y - targetCenterY, 2)
             );
 
-            const hitRadius = 15; // Radius for successful hit detection
+            const hitRadius = 20; // Radius for successful hit detection
 
             if (distance <= hitRadius) {
                 resultDisplay.textContent = "Success! The frog made it to the platform!";
