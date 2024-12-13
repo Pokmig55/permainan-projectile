@@ -143,18 +143,7 @@
                 Math.pow(projectile.y - targetCenterY, 2)
             );
 
-            const hitRadius = 15 ; // Radius for successful hit detection
-
-            if (distance <= hitRadius) {
-                resultDisplay.textContent = "Success! The frog made it to the platform!";
-                resultDisplay.style.color = "green";
-            } else {
-                resultDisplay.textContent = "Missed! Try a different angle.";
-                resultDisplay.style.color = "red";
-            }
-
-            resetGame();
-        }
+      
 
         function render() {
             resetCanvas();
