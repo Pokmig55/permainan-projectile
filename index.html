@@ -42,7 +42,7 @@
     </style>
 </head>
 <body>
-    <h1>Projectile Challenge Game</h1>
+    <h1>Permainan projectile</h1>
     <p>Help the cat jump to the target platform! Enter the correct angle to make the jump.</p>
     <div id="controls">
         <label for="angle">Angle (degrees): </label>
@@ -66,11 +66,11 @@
         const launchButton = document.getElementById("launch");
         const resultDisplay = document.getElementById("result");
 
-        const velocity = 37.65; // Fixed velocity in m/s
-        const targetRange = 50.11; // Fixed target range in m
-        const targetHeight = 22.74; // Fixed target height in m
+        const velocity = 37.65; // masuk velocity in m/s
+        const targetRange = 50.11; // masuk target range in m
+        const targetHeight = 22.74; // masuk target height in m
         const gravity = 9.81; // Gravity in m/s^2
-        const scale = 10; // Scale for converting pixels to meters
+        const scale = 5; // Scale for converting pixels to meters
 
         const target = {
             x: targetRange * scale, // Convert to pixels
