@@ -85,6 +85,12 @@
             launched: false,
             time: 0
         };
+          function drawCannonball(x, y) {
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, Math.PI * 2);
+    ctx.fillStyle = "black";
+    ctx.fill();
+  
 
         function drawGround() {
             ctx.fillStyle = "green";
