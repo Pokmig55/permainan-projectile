@@ -106,12 +106,18 @@
             ctx.fillStyle = "orange";
             ctx.fill();
         }
-
+        function drawCannonball(x, y) {
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, Math.PI * 2);
+    ctx.fillStyle = "black";
+    ctx.fill();
+      
+        }
         function resetCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+       
         }
-
-        function updateProjectile() {
+            function updateProjectile() {
             if (!projectile.launched) return;
 
             projectile.time += 0.05;
