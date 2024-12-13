@@ -72,6 +72,7 @@
         const gravity = 9.81; // Gravity in m/s^2
         const scale = 5; // Scale for converting pixels to meters
 
+      //hit target
         const target = {
             x: targetRange * scale, // Convert to pixels
             y: targetHeight * scale // Convert to pixels
@@ -142,7 +143,7 @@
                 Math.pow(projectile.y - targetCenterY, 2)
             );
 
-            const hitRadius = 15; // Radius for successful hit detection
+            const hitRadius = 10000000; // Radius for successful hit detection
 
             if (distance <= hitRadius) {
                 resultDisplay.textContent = "Success! The cat made it to the platform!";
