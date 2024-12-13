@@ -153,58 +153,6 @@
                 resultDisplay.style.color = "red";
             }
 
-           function handleRound() {
-    if (round === 1) {
-        // Round 1: System provides speed, player guesses angle
-        // Fixed Data for Round 1
-        speed = 18.3; 
-        distance = 30 ;
-        height 1.37 ;
-        alert("Round 1: Guess the angle to hit the target!");
-    } else if (round === 2) {
-        // Round 2: System provides angle, player guesses speed
-        // Provided Data for Round 2
-        angle = 35 ;
-        distance = 21.55 ;
-        height = println (" ??? ") 
-        alert("Round 2: Guess the speed to hit the target!");
-    } else {
-        alert("Game Over! Final Score: " + score);
-        resetGame();
-        }
-
-        function render() {
-            resetCanvas();
-            drawGround();
-            drawTarget();
-            drawProjectile();
-        }
-
-        function gameLoop() {
-            updateProjectile();
-            render();
-            requestAnimationFrame(gameLoop);
-        }
-
-        function resetGame() {
-            projectile.time = 0;
-            projectile.x = 0;
-            projectile.y = canvas.height;
-            projectile.launched = false;
-        }
-
-        launchButton.addEventListener("click", () => {
-            const angle = parseFloat(angleInput.value) * (Math.PI / 180);
-
-            projectile.x = 0;
-            projectile.y = canvas.height;
-            projectile.vx = velocity * Math.cos(angle);
-            projectile.vy = velocity * Math.sin(angle);
-            projectile.launched = true;
-            projectile.time = 0;
-
-            resultDisplay.textContent = "";
-        });
 
         gameLoop();
     </script>
