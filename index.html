@@ -153,6 +153,41 @@
                 resultDisplay.style.color = "red";
             }
 
+            resetGame();
+        }
+
+        function render() {
+            resetCanvas();
+            drawGround();
+            drawTarget();
+            drawProjectile();
+        }
+
+        function gameLoop() {
+            updateProjectile();
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function resetGame() {
+            projectile.time = 0;
+            projectile.x = 0;
+            projectile.y = canvas.height;
+            projectile.launched = false;
+        }
+
+        launchButton.addEventListener("click", () => {
+            const angle = parseFloat(angleInput.value) * (Math.PI / 180);
+
+            projectile.x = 0;
+            projectile.y = canvas.height;
+            projectile.vx = velocity * Math.cos(angle);
+            projectile.vy = velocity * Math.sin(angle);
+            projectile.launched = true;
+            projectile.time = 0;
+
+            resultDisplay.textContent = "";
+        });
 
         gameLoop();
     </script>
